@@ -28,8 +28,8 @@
     <description>Cordova InAppBrowser with PopupBridge Plugin</description>
     <license>Apache 2.0</license>
     <keywords>cordova,in,app,browser,inappbrowser</keywords>
-    <repo>https://github.com/dpa99c/cordova-plugin-inappbrowser-popup-bridge</repo>
-    <issue>https://github.com/dpa99c/cordova-plugin-inappbrowser-popup-bridge/issues</issue>
+    <repo>https://github.com/raccoondev85/cordova-plugin-inappbrowser-popup-bridge</repo>
+    <issue>https://github.com/raccoondev85/cordova-plugin-inappbrowser-popup-bridge/issues</issue>
 
     <!-- android -->
     <platform name="android">

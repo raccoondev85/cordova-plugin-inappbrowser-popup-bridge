@@ -96,6 +96,7 @@ public class InAppBrowser extends CordovaPlugin {
     private static final String SELF = "_self";
     private static final String SYSTEM = "_system";
     private static final String EXIT_EVENT = "exit";
+    private static final String BEFORE_EXIT_EVENT = "beforeexit";
     private static final String LOCATION = "location";
     private static final String ZOOM = "zoom";
     private static final String HIDDEN = "hidden";
@@ -106,6 +107,7 @@ public class InAppBrowser extends CordovaPlugin {
     private static final String CLEAR_ALL_CACHE = "clearcache";
     private static final String CLEAR_SESSION_CACHE = "clearsessioncache";
     private static final String HARDWARE_BACK_BUTTON = "hardwareback";
+    private static final String DISABLE_CLOSE_AT_HARDWARE_BACK_BUTTON = "disableCloseAtHardwareBackbutton";
     private static final String MEDIA_PLAYBACK_REQUIRES_USER_ACTION = "mediaPlaybackRequiresUserAction";
     private static final String SHOULD_PAUSE = "shouldPauseOnSuspend";
     private static final Boolean DEFAULT_HARDWARE_BACK = true;
@@ -134,6 +136,7 @@ public class InAppBrowser extends CordovaPlugin {
     private boolean clearAllCache = false;
     private boolean clearSessionCache = false;
     private boolean hadwareBackButton = true;
+    private boolean disableCloseAtHardwareBackbutton = true;
     private boolean mediaPlaybackRequiresUserGesture = false;
     private boolean shouldPauseInAppBrowser = false;
     private boolean useWideViewPort = true;
@@ -527,6 +530,20 @@ public class InAppBrowser extends CordovaPlugin {
     }
 
     /**
+     * send beforeeixt event 
+     */
+    public void sendBeforeExit() {
+        try {
+            JSONObject obj = new JSONObject();
+            obj.put("type", BEFORE_EXIT_EVENT);
+            sendUpdate(obj, true);
+        } catch (JSONException ex) {
+            LOG.d(LOG_TAG, "Should never happen");
+        }
+    }
+
+
+    /**
      * Closes the dialog
      */
     public void closeDialog() {
@@ -589,6 +606,16 @@ public class InAppBrowser extends CordovaPlugin {
     public boolean hardwareBack() {
         return hadwareBackButton;
     }
+
+    /**
+     * Has the user set the disablilty back button to close app
+     * @return boolean
+     */
+    public boolean isDisabledCloseAtHardwareBackbutton() {
+        return disableCloseAtHardwareBackbutton;
+    }
+
+
 
     /**
      * Checks to see if it is possible to go forward one page in history, then does so.
@@ -667,6 +694,12 @@ public class InAppBrowser extends CordovaPlugin {
                 hadwareBackButton = hardwareBack.equals("yes") ? true : false;
             } else {
                 hadwareBackButton = DEFAULT_HARDWARE_BACK;
+            }
+            String _disableCloseAtHardwareBackbutton = features.get(DISABLE_CLOSE_AT_HARDWARE_BACK_BUTTON);
+            if (_disableCloseAtHardwareBackbutton != null) {
+                disableCloseAtHardwareBackbutton = _disableCloseAtHardwareBackbutton.equals("yes") ? true : false;
+            } else {
+                disableCloseAtHardwareBackbutton = true;
             }
             String mediaPlayback = features.get(MEDIA_PLAYBACK_REQUIRES_USER_ACTION);
             if (mediaPlayback != null) {
